@@ -1,8 +1,12 @@
-const express  = require('express');
+const express = require('express');
+const { errorHandlerMiddleware } = require('./middlewares/errorHandler');
+const { notFoundMiddleware } = require('./middlewares/notFound');
 const app = express();
+const authRoutes = require('./routes/auth');
 
-app.get('/',(req,res)=>{
-  res.send("hello from server");
-});
+app.use('/e-commerce/v1', authRoutes);
 
-app.listen(3001, ()=> console.log('serer running'));
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
+
+app.listen(3001, () => console.log('serer running'));
