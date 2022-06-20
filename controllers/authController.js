@@ -7,6 +7,7 @@ const register = asyncWrapper(async (req, res) => {
 });
 
 const login = asyncWrapper(async (req, res) => {
+  console.log(req);
   res.send("hello from login controller");
 })
 
