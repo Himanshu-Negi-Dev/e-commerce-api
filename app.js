@@ -1,7 +1,10 @@
 const express = require('express');
+const app = express();
+require('dotenv').config();
+
+const { connectDB } = require('./db/connection');
 const { errorHandlerMiddleware } = require('./middlewares/errorHandler');
 const { notFoundMiddleware } = require('./middlewares/notFound');
-const app = express();
 const authRoutes = require('./routes/auth');
 
 app.use('/e-commerce/v1', authRoutes);
@@ -9,4 +12,16 @@ app.use('/e-commerce/v1', authRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-app.listen(3001, () => console.log('serer running'));
+const port = process.env.PORT || 5000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    console.log(`server connected to ${port}`)
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
+
+start();
